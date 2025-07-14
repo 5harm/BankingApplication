@@ -17,7 +17,6 @@ public class MultiAccountManager {
         accounts = loadAccounts();
     }
 
-
     // Registers a new user account
     public boolean register(String username, String password) {
         if (accounts.containsKey(username)) {
@@ -63,6 +62,11 @@ public class MultiAccountManager {
         System.out.println("Registered users: " + accounts.keySet());
     }
 
+    // New added method in order to list users in the GUI
+    public String getUsernames(){
+        return accounts.keySet().toString();
+    }
+
     
     // Lists all hashed passwords for testing
     public void listPasswords() {
@@ -70,6 +74,17 @@ public class MultiAccountManager {
         for (Map.Entry<String, User> entry : accounts.entrySet()) {
             System.out.println("Username: " + entry.getKey() + " -> Hashed Password: " + entry.getValue().getPassword());
         }
+    }
+
+
+    // New added method to list Hashed passwords in the GUI
+    public String getHashedPasswords(){
+        StringBuilder pass = new StringBuilder();
+        for (Map.Entry<String, User> entry : accounts.entrySet()) {
+            pass.append("Username: " + entry.getKey() + " -> Hashed Password: " + entry.getValue().getPassword()).append("\n");
+        }
+        return pass.toString();
+
     }
 
 }

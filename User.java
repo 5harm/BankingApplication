@@ -11,7 +11,7 @@ public class User implements Serializable{
     // Constructor for username and passwword
     public User(String username, String password){
         this.username = username;
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt(12)); 
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt(12)); //Hashes password and salts with a work of 12
     }
 
 
@@ -30,5 +30,7 @@ public class User implements Serializable{
     public String getPassword(){
         return this.password;
     }
+
+
 
 }
