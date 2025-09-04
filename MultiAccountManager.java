@@ -87,4 +87,33 @@ public class MultiAccountManager {
 
     }
 
+    public double getBalance(String username) {
+        User user = accounts.get(username);
+        return (user != null) ? user.getBalance() : 0.0;
+    }
+
+    public boolean deposit(String username, double amount) {
+        User user = accounts.get(username);
+        if (user != null) {
+            user.deposit(amount);
+            saveAccounts();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean transfer(String fromUser, String toUser, double amount) {
+        User from = accounts.get(fromUser);
+        User to = accounts.get(toUser);
+        if (from != null && to != null) {
+            boolean success = from.transferTo(to, amount);
+            if (success) {
+                saveAccounts();
+            }
+            return success;
+        }
+        return false;
+    }
+
+
 }

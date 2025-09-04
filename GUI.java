@@ -11,6 +11,8 @@ public class GUI extends JFrame {
     private JPasswordField passwordField;
     private JTextArea outputArea;
 
+    private String loggedInUser = null;
+
     public GUI() { // Starts the method GUI 
         manager = new MultiAccountManager();
         createUI();
@@ -111,11 +113,74 @@ public class GUI extends JFrame {
         String password = new String(passwordField.getPassword());
 
         if (manager.login(username, password)) {
-            appendOutput("Login successful! Welcome, " + username);
+            loggedInUser = username;
+            showLoggedInView();
         } else {
             appendOutput("Login failed. Invalid credentials.");
         }
     }
+    private void showLoggedInView() {
+    getContentPane().removeAll(); // Clear current GUI
+
+    JPanel panel = new JPanel(new BorderLayout(10, 10));
+    add(panel);
+
+    // Show username and balance
+    JLabel userInfo = new JLabel("Logged in as: " + loggedInUser +
+        " | Balance: $" + manager.getBalance(loggedInUser));
+    panel.add(userInfo, BorderLayout.NORTH);
+
+    // Action buttons
+    JPanel buttonPanel = new JPanel(new FlowLayout());
+    JButton depositButton = new JButton("Deposit");
+    JButton transferButton = new JButton("Transfer");
+    buttonPanel.add(depositButton);
+    buttonPanel.add(transferButton);
+    panel.add(buttonPanel, BorderLayout.CENTER);
+
+    // Output area
+    outputArea = new JTextArea();
+    outputArea.setEditable(false);
+    JScrollPane scrollPane = new JScrollPane(outputArea);
+    panel.add(scrollPane, BorderLayout.SOUTH);
+
+    // Button actions
+    depositButton.addActionListener(e -> handleDeposit());
+    transferButton.addActionListener(e -> handleTransfer());
+
+    revalidate();
+    repaint();
+}
+
+private void handleDeposit() {
+    String amountStr = JOptionPane.showInputDialog(this, "Enter amount to deposit:");
+    try {
+        double amount = Double.parseDouble(amountStr);
+        if (manager.deposit(loggedInUser, amount)) {
+            appendOutput("Deposited $" + amount);
+        } else {
+            appendOutput("Deposit failed.");
+        }
+    } catch (NumberFormatException e) {
+        appendOutput("Invalid number.");
+    }
+}
+
+private void handleTransfer() {
+    String toUser = JOptionPane.showInputDialog(this, "Enter recipient username:");
+    String amountStr = JOptionPane.showInputDialog(this, "Enter amount to transfer:");
+    try {
+        double amount = Double.parseDouble(amountStr);
+        if (manager.transfer(loggedInUser, toUser, amount)) {
+            appendOutput("Transferred $" + amount + " to " + toUser);
+        } else {
+            appendOutput("Transfer failed.");
+        }
+    } catch (NumberFormatException e) {
+        appendOutput("Invalid number.");
+    }
+}
+
 
     //Shows a list of users in the file, simply outputs them
     private void handleListUsers() {

@@ -30,6 +30,23 @@ public class User implements Serializable{
     public String getPassword(){
         return this.password;
     }
+    public void deposit (double amount){
+        if (amount > 0){
+            balance += amount;
+        }
+    }
+
+    public boolean transferTo(User target, double amount){
+        if (amount > 0 && balance >= amount){
+            balance -= amount;
+            target.deposit(amount);
+            return true;
+        }
+        return false;
+    }
+    public double getBalance(){
+        return balance;
+    }
 
 
 

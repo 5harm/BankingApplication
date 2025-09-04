@@ -1,12 +1,13 @@
 #MultiAccountManager
 
-A simple Java-based user account manager with support for **registration**, **login**, **password hashing**, and **persistent storage** using file serialization.  
+A simple Java-based user account manager with support for **registration**, **login**, **balance transfer**, **password hashing**, and **persistent storage** using file serialization.  
 This third iteration includes a simple GUI which allows users to use the account manager with ease
 
 ##Features
 
 - Register new user accounts
 - Authenticate users with username and password
+- Allows for balance and balance transfers between acccounts stored
 - Persistent storage using Java object serialization (`accounts.ser`)
 - Interactive user interface that allows easy use of the program
 - To test out password hashing a mode is added which lets you access it by typing 123321 into the username field and pressing the option to list paswords **Made For Tests Only**
